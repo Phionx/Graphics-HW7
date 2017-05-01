@@ -45,7 +45,7 @@ The file follows the following format:
 
 See the file script for an example of the file format
 """
-ARG_COMMANDS = [ 'line', 'scale', 'move', 'rotate', 'save', 'circle', 'bezier', 'hermite', 'box', 'sphere', 'torus' ]
+ARG_COMMANDS = [ 'line', 'scale', 'move', 'rotate', 'save', 'circle', 'bezier', 'hermite', 'box', 'sphere', 'torus','color' ]
 
 def parse_file( fname, edges, transform, screen, color ):
 
@@ -62,18 +62,18 @@ def parse_file( fname, edges, transform, screen, color ):
             c+= 1
             args = lines[c].strip().split(' ')
             #print 'args\t' + str(args)
-            
+           
         if line == 'sphere':
             #print 'SPHERE\t' + str(args)
             add_sphere(edges,
                        float(args[0]), float(args[1]), float(args[2]),
-                       float(args[3]), step)
+                       float(args[3]), step, color)
             
         elif line == 'torus':
             #print 'TORUS\t' + str(args)
             add_torus(edges,
                       float(args[0]), float(args[1]), float(args[2]),
-                      float(args[3]), float(args[4]), step)
+                      float(args[3]), float(args[4]), step, color)
             
         elif line == 'box':
             #print 'BOX\t' + str(args)
@@ -127,7 +127,8 @@ def parse_file( fname, edges, transform, screen, color ):
                 
         elif line == 'clear':
             edges = []
-            
+        elif line == "color":
+            color = [args[0],args[1],args[2]]
         elif line == 'ident':
             ident(transform)
 
@@ -136,7 +137,7 @@ def parse_file( fname, edges, transform, screen, color ):
 
         elif line == 'display' or line == 'save':
             clear_screen(screen)
-            draw_lines(edges, screen, color)
+            draw_polygons(edges, screen, color)
 
             if line == 'display':
                 display(screen)
@@ -144,3 +145,5 @@ def parse_file( fname, edges, transform, screen, color ):
                 save_extension(screen, args[0])
             
         c+= 1
+
+
